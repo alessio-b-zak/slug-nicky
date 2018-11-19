@@ -38,7 +38,7 @@ class BulletSprite(pg.sprite.Sprite):
         if not self.state == BulletState.EXPLODING:
             self.state = BulletState.EXPLODING
             self.animating = False
-            print("I'm a bullet and I should explode")
+
 
     def animate(self):
         if self.state == BulletState.FIRING and not self.animating:
