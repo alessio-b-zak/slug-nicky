@@ -28,5 +28,13 @@ def clip_object(world_object_rect):
     world_object_rect.bottom  = clip(world_object_rect.bottom, 0, height)
     return world_object_rect
 
+def is_off_screen(world_object_rect):
+    print("checking off screen")
+    return (world_object_rect.left < 0 or
+            world_object_rect.right >  width or
+            world_object_rect.top < 0 or
+            world_object_rect.bottom  > height)
+
+
 def default_animate(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0,93,93), 4, -1, True, 12)
