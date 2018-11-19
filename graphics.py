@@ -26,6 +26,7 @@ def clip_object(world_object_rect):
     world_object_rect.right = clip(world_object_rect.right, 0, width)
     world_object_rect.top  = clip(world_object_rect.top, 0, height)
     world_object_rect.bottom  = clip(world_object_rect.bottom, 0, height)
+    print(world_object_rect.right)
     return world_object_rect
 
 def is_off_screen(world_object_rect):
@@ -40,4 +41,3 @@ def bullet_animate(sprite_sheet):
 
 def slug_animate(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0,73,73), 4, -1, True, 12)
-

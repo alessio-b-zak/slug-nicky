@@ -15,13 +15,15 @@ class SlugState(Enum):
 class SlugSprite(pg.sprite.Sprite):
     def __init__(self, sprite_name, orientation):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.image, self.rect = load_image(data_dir, sprite_name, -1)
+        # self.image, self.rect = load_image(data_dir, sprite_name, -1)
+        self.anim = slug_animate(slug_idle_small)
+        self.image = pg.transform.scale2x(self.anim.next())
+        self.rect = self.image.get_rect()
         self.state = SlugState.IDLE
         self.prevstate = self.state
         self.orientation = orientation
         self.lastwalkdir = None
         self.changed_state = False
-        self.anim = None
         self.gravity, self.movepos, self.controls = calculate_orientation(orientation)
         self.left_key = self.controls[0]
         self.right_key = self.controls[1]
