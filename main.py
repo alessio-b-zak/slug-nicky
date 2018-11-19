@@ -32,7 +32,20 @@ class Scene():
     def update(self, screen, dt):
         self.slug_sprite_group.update(dt)
         self.bullet_sprite_group.update(dt)
+        self.calculate_collisions()
         self.draw(screen)
+
+    def calculate_collisions(self):
+        collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.bullet_sprite_group, False, False)
+        if collide_dict:
+            for item in collide_dict:
+                if not item.key.orientation == item.value.orientation:
+                    item.key.on_hit()
+                    item.value.on_hit()
+        else:
+            print("No collisions")
+
+
     def draw(self, screen):
         background_im, _ = load_image(data_dir, background)
         screen.blit(background_im, [0,0])

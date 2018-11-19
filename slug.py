@@ -22,7 +22,9 @@ class SlugSprite(pg.sprite.Sprite):
         self.lastwalkdir = None
         self.changed_state = False
         self.anim = None
-        self.gravity, self.movepos = calculate_orientation(orientation)
+        self.gravity, self.movepos, self.controls = calculate_orientation(orientation)
+        self.left_key = self.controls[0]
+        self.right_key = self.controls[1]
 
     def apply_movement(self):
         if self.state == SlugState.MOVING_RIGHT:
@@ -39,15 +41,19 @@ class SlugSprite(pg.sprite.Sprite):
     def calculate_state(self):
         keys = pg.key.get_pressed()
         self.prevstate = self.state
-        if keys[pg.K_RIGHT]:
+        if keys[self.right_key]:
             self.state = SlugState.MOVING_RIGHT
-        if keys[pg.K_LEFT]:
+        if keys[self.left_key]:
             self.state = SlugState.MOVING_LEFT
-        if not (keys[pg.K_RIGHT] or keys[pg.K_LEFT]):
+        if not (keys[self.right_key] or keys[self.left_key]):
             self.state = SlugState.IDLE
         if not (self.state == self.prevstate):
             self.changed_state = False
-        print(self.state)
+        # print(self.state)
+
+    def on_hit(self):
+        print("Ouch i'm slug " + self.orientation)
+
 
     def animate(self):
         if self.state == SlugState.MOVING_RIGHT and not self.changed_state:

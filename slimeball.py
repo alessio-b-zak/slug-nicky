@@ -21,11 +21,11 @@ class BulletSprite(pg.sprite.Sprite):
         self.anim = None
         self.next_kill = False
         self.animating = False
-        self.gravity, _ = calculate_orientation(orientation)
+        self.gravity, _, _ = calculate_orientation(orientation)
         self.gravity = tuple(-1*x for x in self.gravity)
 
     def apply_movement(self):
-        if self.next_kill:
+        if self.state == BulletState.OFF_SCREEN:
             self.kill()
         if self.state == BulletState.FIRING:
             newpos = self.rect.move(self.gravity)
@@ -33,6 +33,8 @@ class BulletSprite(pg.sprite.Sprite):
         if is_off_screen(self.rect):
             self.state = BulletState.OFF_SCREEN
 
+    def on_hit(self):
+        self.state = BulletState.EXPLODING
 
     def animate(self):
         if self.state == BulletState.FIRING and not self.animating:
