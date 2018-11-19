@@ -14,8 +14,12 @@ class Scene():
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         self.slime_sprite_group = pg.sprite.LayeredUpdates()
         self.sprite_groups = [self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
-        for i in range(0, 4):
-            self.slug_sprite_group.add(SlugSprite(i))
+        # for i in range(0, 4):
+        self.slug_sprite_group.add(SlugSprite(0, (927, 508)))
+        self.slug_sprite_group.add(SlugSprite(1, (500, 927)))
+        self.slug_sprite_group.add(SlugSprite(2, (0, 508)))
+        self.slug_sprite_group.add(SlugSprite(3, (508, 0)))
+
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             keys = pg.key.get_pressed()
