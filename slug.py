@@ -53,7 +53,7 @@ class SlugSprite(pg.sprite.Sprite):
             self.changed_state = False
         # print(self.state)
 
-    def on_hit(self):
+    def on_hit(self, orientation):
         pass
         # print("Ouch i'm slug " + str(self.orientation))
 
@@ -74,12 +74,7 @@ class SlugSprite(pg.sprite.Sprite):
         self.image = pg.transform.scale2x(self.anim.next())
         if (self.lastwalkdir == SlugState.MOVING_LEFT):
             self.image = pg.transform.flip(self.image, True, False)
-        if (self.orientation == 0):
-            self.image = pg.transform.rotate(self.image, 90)
-        if (self.orientation == 2):
-            self.image = pg.transform.rotate(self.image, -90)
-        if (self.orientation == 3):
-            self.image = pg.transform.rotate(self.image, 180)
+        self.image = reorient(self.orientation, self.image)
 
     def update(self, dt):
         self.calculate_state()

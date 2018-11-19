@@ -40,3 +40,13 @@ def calculate_orientation(orientation):
         raise
     return gravity, movepos, controls
 
+
+def reorient(orientation, image):
+    if (orientation == 0):
+        image = pg.transform.rotate(image, 90)
+    if (orientation == 2):
+        image = pg.transform.rotate(image, -90)
+    if (orientation == 3):
+        image = pg.transform.rotate(image, 180)
+    return image
+

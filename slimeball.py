@@ -19,6 +19,7 @@ class BulletSprite(pg.sprite.Sprite):
         self.image = pg.transform.scale2x(self.anim.next())
         self.rect = self.image.get_rect()
         self.rect.center = initial_position
+        self.enem_orient = None
         self.state = BulletState.FIRING
         self.next_kill = False
         self.animating = True
@@ -34,9 +35,10 @@ class BulletSprite(pg.sprite.Sprite):
         if is_off_screen(self.rect):
             self.state = BulletState.OFF_SCREEN
 
-    def on_hit(self):
+    def on_hit(self, orientation):
         if not self.state == BulletState.EXPLODING:
             self.state = BulletState.EXPLODING
+            self.enem_orient = orientation
             self.animating = False
 
 
@@ -51,7 +53,7 @@ class BulletSprite(pg.sprite.Sprite):
         try:
             self.image = pg.transform.scale2x(self.anim.next())
         except:
-            create_slime_event = pg.event.Event(pg.USEREVENT,{"event_id": MyEvent.CREATE_SLIME, "orientation": self.orientation, "location": self.image.get_rect().center})
+            create_slime_event = pg.event.Event(pg.USEREVENT,{"event_id": MyEvent.CREATE_SLIME, "orientation": self.enem_orient, "location": self.rect.center})
             pg.event.post(create_slime_event)
             self.kill()
 

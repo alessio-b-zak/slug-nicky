@@ -15,11 +15,11 @@ class SlimeSprite(pg.sprite.Sprite):
     def __init__(self, orientation, initial_position):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
         self.orientation = orientation
-        self.image = load_image(data_dir, slime_sprite, -1)
-        self.rect = self.image.get_rect()
+        self.image, self.rect = load_image(data_dir, slime_sprite, -1)
         self.rect.center = initial_position
-        self.state = BulletState.FIRING
         self.gravity, _, _ = calculate_orientation(orientation)
+        self.image = reorient(self.orientation, self.image)
+        print("created")
 
     def apply_movement(self):
         newpos =  self.rect.move(self.gravity)
@@ -29,3 +29,5 @@ class SlimeSprite(pg.sprite.Sprite):
 
     def update(self, dt):
         self.apply_movement()
+        # self.image = reorient(self.orientation, self.image)
+        print(self.rect)

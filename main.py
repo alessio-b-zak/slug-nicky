@@ -13,6 +13,7 @@ class Scene():
         self.slug_sprite_group = pg.sprite.LayeredUpdates()
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         self.slime_sprite_group = pg.sprite.LayeredUpdates()
+        self.sprite_groups = [self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
         for i in range(0, 4):
             self.slug_sprite_group.add(SlugSprite(i))
     def get_event(self, event):
@@ -35,8 +36,8 @@ class Scene():
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
 
     def update(self, screen, dt):
-        self.slug_sprite_group.update(dt)
-        self.bullet_sprite_group.update(dt)
+        for group in self.sprite_groups:
+            group.update(dt)
         self.calculate_collisions()
         self.draw(screen)
 
@@ -45,15 +46,14 @@ class Scene():
         if collide_dict:
             for key, value in collide_dict.items():
                 if not key.orientation == value[0].orientation:
-                    key.on_hit()
-                    value[0].on_hit()
-
+                    key.on_hit(value[0].orientation)
+                    value[0].on_hit(key.orientation)
 
     def draw(self, screen):
         background_im, _ = load_image(data_dir, background)
         screen.blit(background_im, [0,0])
-        self.slug_sprite_group.draw(screen)
-        self.bullet_sprite_group.draw(screen)
+        for group in self.sprite_groups:
+            group.draw(screen)
 
 class Game:
     def __init__(self, **settings):
