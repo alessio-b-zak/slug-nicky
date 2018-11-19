@@ -8,14 +8,21 @@ from slug import *
 
 class Scene():
     def __init__(self):
-        self.sprite_group = pg.sprite.Group()
+        self.sprite_group = pg.sprite.LayeredUpdates()
         for i in range(0, 4):
             self.sprite_group.add(SlugSprite(slug_sprite_char_1, i))
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
-            print('Game State keydown')
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            self.done = True
+            keys = pg.key.get_pressed()
+            if keys[pg.K_1]:
+                sprite_loc = self.sprite_group.get_sprite(0).rect
+            if keys[pg.K_2]:
+                sprite_loc = self.sprite_group.get_sprite(1).rect
+            if keys[pg.K_3]:
+                sprite_loc = self.sprite_group.get_sprite(2).rect
+            if keys[pg.K_4]:
+                sprite_loc = self.sprite_group.get_sprite(3).rect
+
     def update(self, screen, dt):
         self.sprite_group.update(dt)
         self.draw(screen)
