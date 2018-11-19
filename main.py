@@ -11,7 +11,7 @@ class SlugSprite(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
         self.image, self.rect = load_image(data_dir, slug_sprite, -1)
-        self.moving_left = False
+        self.gravity = (0, 2)
     def update(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_RIGHT]:
@@ -20,8 +20,8 @@ class SlugSprite(pg.sprite.Sprite):
         if keys[pg.K_LEFT]:
             newpos = self.rect.move(-10, 0)
             self.rect = newpos
-
-
+        newpos =  self.rect.move(gravity)
+        self.rect = newpos
 
 class Scene():
     def __init__(self):
