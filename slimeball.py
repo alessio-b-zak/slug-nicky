@@ -12,15 +12,16 @@ class BulletState(Enum):
     OFF_SCREEN = 3
 
 class BulletSprite(pg.sprite.Sprite):
-    def __init__(self, sprite_name, orientation, initial_position):
+    def __init__(self, orientation, initial_position):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.image, self.rect = load_image(data_dir, sprite_name, -1)
-        self.rect = initial_position
         self.orientation = orientation
+        self.anim = bullet_animate(bullet_anim_small)
+        self.image = pg.transform.scale2x(self.anim.next())
+        self.rect = self.image.get_rect()
+        self.rect.center = initial_position
         self.state = BulletState.FIRING
-        self.anim = None
         self.next_kill = False
-        self.animating = False
+        self.animating = True
         self.gravity, _, _ = calculate_orientation(orientation)
         self.gravity = tuple(-1*x for x in self.gravity)
 
@@ -34,14 +35,26 @@ class BulletSprite(pg.sprite.Sprite):
             self.state = BulletState.OFF_SCREEN
 
     def on_hit(self):
-        self.state = BulletState.EXPLODING
-        print("I'm a bullet and I should explode")
+        if not self.state == BulletState.EXPLODING:
+            self.state = BulletState.EXPLODING
+            self.animating = False
+            print("I'm a bullet and I should explode")
 
     def animate(self):
         if self.state == BulletState.FIRING and not self.animating:
             self.anim = bullet_animate(bullet_anim_small)
             self.animating = True
-        self.image = pg.transform.scale2x(self.anim.next())
+        if self.state == BulletState.EXPLODING and not self.animating:
+            self.anim = bullet_explode_animate(bullet_explode_anim)
+            self.animating = True
+
+        try:
+            self.image = pg.transform.scale2x(self.anim.next())
+        except:
+            create_slime_event = pg.event.Event(pg.USEREVENT,{"event_id": MyEvent.CREATE_SLIME, "orientation": self.orientation, "location": self.image.get_rect().center})
+            pg.event.post(create_slime_event)
+            self.kill()
+
 
     def update(self, dt):
         self.apply_movement()

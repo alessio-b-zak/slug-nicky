@@ -5,29 +5,34 @@ from assets import *
 from graphics import *
 from settings import *
 from slug import *
+from slime import *
 from slimeball import *
 
 class Scene():
     def __init__(self):
         self.slug_sprite_group = pg.sprite.LayeredUpdates()
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
+        self.slime_sprite_group = pg.sprite.LayeredUpdates()
         for i in range(0, 4):
-            self.slug_sprite_group.add(SlugSprite(slug_sprite_char_1, i))
+            self.slug_sprite_group.add(SlugSprite(i))
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             keys = pg.key.get_pressed()
             if keys[pg.K_1]:
-                sprite_loc = self.slug_sprite_group.get_sprite(0).rect
-                self.bullet_sprite_group.add(BulletSprite(bullet_still, 0, sprite_loc))
+                sprite_loc = self.slug_sprite_group.get_sprite(0).rect.center
+                self.bullet_sprite_group.add(BulletSprite(0, sprite_loc))
             if keys[pg.K_2]:
-                sprite_loc = self.slug_sprite_group.get_sprite(1).rect
-                self.bullet_sprite_group.add(BulletSprite(bullet_still, 1, sprite_loc))
+                sprite_loc = self.slug_sprite_group.get_sprite(1).rect.center
+                self.bullet_sprite_group.add(BulletSprite(1, sprite_loc))
             if keys[pg.K_3]:
-                sprite_loc = self.slug_sprite_group.get_sprite(2).rect
-                self.bullet_sprite_group.add(BulletSprite(bullet_still, 2, sprite_loc))
+                sprite_loc = self.slug_sprite_group.get_sprite(2).rect.center
+                self.bullet_sprite_group.add(BulletSprite(2, sprite_loc))
             if keys[pg.K_4]:
-                sprite_loc = self.slug_sprite_group.get_sprite(3).rect
-                self.bullet_sprite_group.add(BulletSprite(bullet_still, 3, sprite_loc))
+                sprite_loc = self.slug_sprite_group.get_sprite(3).rect.center
+                self.bullet_sprite_group.add(BulletSprite(3, sprite_loc))
+        elif event.type == pg.USEREVENT:
+            if event.dict["event_id"] == MyEvent.CREATE_SLIME:
+                self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
 
     def update(self, screen, dt):
         self.slug_sprite_group.update(dt)
@@ -42,8 +47,6 @@ class Scene():
                 if not key.orientation == value[0].orientation:
                     key.on_hit()
                     value[0].on_hit()
-        else:
-            print("No collisions")
 
 
     def draw(self, screen):

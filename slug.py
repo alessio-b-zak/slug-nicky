@@ -13,7 +13,7 @@ class SlugState(Enum):
     IDLE = 4
 
 class SlugSprite(pg.sprite.Sprite):
-    def __init__(self, sprite_name, orientation):
+    def __init__(self, orientation):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
         # self.image, self.rect = load_image(data_dir, sprite_name, -1)
         self.anim = slug_animate(slug_idle_small)
@@ -54,7 +54,8 @@ class SlugSprite(pg.sprite.Sprite):
         # print(self.state)
 
     def on_hit(self):
-        print("Ouch i'm slug " + str(self.orientation))
+        pass
+        # print("Ouch i'm slug " + str(self.orientation))
 
 
     def animate(self):

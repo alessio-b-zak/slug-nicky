@@ -1,4 +1,5 @@
 import pygame as pg
+from enum import Enum
 
 
 slug_grav = 5
@@ -8,6 +9,9 @@ size = width, height = 1000, 1000
 
 data_dir = "./assets"
 
+
+class MyEvent(Enum):
+    CREATE_SLIME = 0
 
 orientation0_controls = (pg.K_s, pg.K_w)
 orientation1_controls = (pg.K_LEFT, pg.K_RIGHT)
