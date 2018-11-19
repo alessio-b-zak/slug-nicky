@@ -38,10 +38,10 @@ class Scene():
     def calculate_collisions(self):
         collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.bullet_sprite_group, False, False)
         if collide_dict:
-            for item in collide_dict:
-                if not item.key.orientation == item.value.orientation:
-                    item.key.on_hit()
-                    item.value.on_hit()
+            for key, value in collide_dict.items():
+                if not key.orientation == value[0].orientation:
+                    key.on_hit()
+                    value[0].on_hit()
         else:
             print("No collisions")
 

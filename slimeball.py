@@ -35,10 +35,11 @@ class BulletSprite(pg.sprite.Sprite):
 
     def on_hit(self):
         self.state = BulletState.EXPLODING
+        print("I'm a bullet and I should explode")
 
     def animate(self):
         if self.state == BulletState.FIRING and not self.animating:
-            self.anim = default_animate(bullet_anim)
+            self.anim = bullet_animate(bullet_anim_small)
             self.animating = True
         self.image = pg.transform.scale2x(self.anim.next())
 

@@ -35,5 +35,9 @@ def is_off_screen(world_object_rect):
             world_object_rect.bottom  > (height+110))
 
 
-def default_animate(sprite_sheet):
-    return SpriteStripAnim(sprite_sheet, (0,0,93,93), 4, -1, True, 12)
+def bullet_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,28,28), 4, -1, True, 12)
+
+def slug_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,73,73), 4, -1, True, 12)
+
