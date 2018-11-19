@@ -1,11 +1,11 @@
 import pygame as pg
 import os
 
-
 def load_image(data_dir, name, colorkey=None):
     fullname = os.path.join(data_dir, name)
     try:
         image = pg.image.load(fullname)
+        image = pg.transform.scale2x(image)
     except pygame.error:
         print ('Cannot load image:', fullname)
         raise SystemExit(str(geterror()))

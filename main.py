@@ -6,6 +6,18 @@ from graphics import *
 
 data_dir = "./assets"
 
+def clip(val, minval, maxval):
+        return min(max(val, minval), maxval)
+
+size = width, height = 1200, 800
+
+
+def clip_object(world_object_rect):
+    world_object_rect.left  = clip(world_object_rect.left, 0, width)
+    world_object_rect.right = clip(world_object_rect.right, 0, width)
+    world_object_rect.top  = clip(world_object_rect.top, 0, height)
+    world_object_rect.bottom  = clip(world_object_rect.bottom, 0, height)
+    return world_object_rect
 
 class SlugSprite(pg.sprite.Sprite):
     def __init__(self):
@@ -20,7 +32,9 @@ class SlugSprite(pg.sprite.Sprite):
         if keys[pg.K_LEFT]:
             newpos = self.rect.move(-10, 0)
             self.rect = newpos
-        newpos =  self.rect.move(gravity)
+        newpos =  self.rect.move(self.gravity)
+        self.rect = newpos
+        newpos = clip_object(self.rect)
         self.rect = newpos
 
 class Scene():
@@ -66,7 +80,7 @@ class Game:
 
 if __name__ == '__main__':
     settings = {
-        'size':(600,400),
+        'size':(width, height),
         'fps' :60
     }
 
