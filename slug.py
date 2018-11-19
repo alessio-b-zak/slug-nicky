@@ -7,13 +7,13 @@ from enum import Enum
 def calculate_orientation(orientation):
     if orientation == 0:
         gravity = (slug_grav,0)
-        movepos = (0, slug_speed)
+        movepos = (0, -slug_speed)
     elif orientation == 1:
         gravity = (0,slug_grav)
         movepos = (slug_speed, 0)
     elif orientation == 2:
         gravity = (-slug_grav, 0)
-        movepos = (0, -slug_speed)
+        movepos = (0, slug_speed)
     elif orientation == 3:
         gravity = (0,-slug_grav)
         movepos = (-slug_speed,0)
@@ -35,6 +35,7 @@ class SlugSprite(pg.sprite.Sprite):
         self.image, self.rect = load_image(data_dir, sprite_name, -1)
         self.state = SlugState.IDLE
         self.prevstate = self.state
+        self.orientation = orientation
         self.lastwalkdir = None
         self.changed_state = False
         self.anim = None
@@ -65,7 +66,7 @@ class SlugSprite(pg.sprite.Sprite):
             self.changed_state = False
         print(self.state)
 
-    def animate_slug(self):
+    def animate(self):
         if self.state == SlugState.MOVING_RIGHT and not self.changed_state:
             self.anim = default_animate(slug_walk)
             self.changed_state = True
@@ -81,10 +82,14 @@ class SlugSprite(pg.sprite.Sprite):
         self.image = pg.transform.scale2x(self.anim.next())
         if (self.lastwalkdir == SlugState.MOVING_LEFT):
             self.image = pg.transform.flip(self.image, True, False)
-
+        if (self.orientation == 0):
+            self.image = pg.transform.rotate(self.image, 90)
+        if (self.orientation == 2):
+            self.image = pg.transform.rotate(self.image, -90)
+        if (self.orientation == 3):
+            self.image = pg.transform.rotate(self.image, 180)
 
     def update(self, dt):
         self.calculate_state()
         self.apply_movement()
-        self.animate_slug()
-
+        self.animate()

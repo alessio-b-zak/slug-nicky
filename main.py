@@ -20,7 +20,8 @@ class Scene():
         self.sprite_group.update(dt)
         self.draw(screen)
     def draw(self, screen):
-        screen.fill((0,0,255))
+        background_im, _ = load_image(data_dir, background)
+        screen.blit(background_im, [0,0])
         self.sprite_group.draw(screen)
 
 class Game:
