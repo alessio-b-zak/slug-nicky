@@ -1,5 +1,9 @@
 import pygame as pg
+from settings import *
 import os
+
+def clip(val, minval, maxval):
+        return min(max(val, minval), maxval)
 
 def load_image(data_dir, name, colorkey=None):
     fullname = os.path.join(data_dir, name)
@@ -15,4 +19,11 @@ def load_image(data_dir, name, colorkey=None):
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pg.RLEACCEL)
     return image, image.get_rect()
+
+def clip_object(world_object_rect):
+    world_object_rect.left  = clip(world_object_rect.left, 0, width)
+    world_object_rect.right = clip(world_object_rect.right, 0, width)
+    world_object_rect.top  = clip(world_object_rect.top, 0, height)
+    world_object_rect.bottom  = clip(world_object_rect.bottom, 0, height)
+    return world_object_rect
 

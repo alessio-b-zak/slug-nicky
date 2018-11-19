@@ -1,1 +1,1 @@
-slug_sprite = "slug_sprite.png"
+slug_sprite_char_1 = "slug_sprite.png"
