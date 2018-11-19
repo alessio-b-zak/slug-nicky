@@ -1,5 +1,6 @@
 import pygame as pg
 from graphics import *
+from assets import *
 from settings import *
 from enum import Enum
 from spriteanim import *
@@ -34,9 +35,14 @@ class SlugSprite(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
         self.image, self.rect = load_image(data_dir, sprite_name, -1)
         self.state = SlugState.IDLE
+        self.prevstate = self.state
+        self.started_anim = False
+        self.anim = None
         self.gravity, self.movepos = calculate_orientation(orientation)
-    def update(self):
+
+    def calculate_movement(self):
         keys = pg.key.get_pressed()
+        self.prevstate = self.state
         if keys[pg.K_RIGHT]:
             newpos = self.rect.move(*self.movepos)
             self.rect = newpos
@@ -47,10 +53,26 @@ class SlugSprite(pg.sprite.Sprite):
             self.state = SlugState.MOVING_LEFT
         if not (keys[pg.K_RIGHT] or keys[pg.K_LEFT]):
             self.state = SlugState.IDLE
-
+        if not (self.state == self.prevstate):
+            self.started_anim = False
         newpos =  self.rect.move(self.gravity)
         self.rect = newpos
         newpos = clip_object(self.rect)
         self.rect = newpos
-        print(self.state)
+
+    def animate_slug(self):
+        if self.state == SlugState.MOVING_RIGHT and not self.started_anim:
+            slug_walk = data_dir + "/" + slug_sprite_walk_1
+            self.anim = SpriteStripAnim(slug_walk, (0,0,93,93), 4, -1, True, 12)
+            self.started_anim = True
+        if self.state == SlugState.IDLE and not self.started_anim:
+            slug_idle = data_dir + "/" + slug_sprite_idle_1
+            self.anim = SpriteStripAnim(slug_idle, (0,0,93,93), 4, -1, True, 12)
+            self.started_anim = True
+
+        self.image = pg.transform.scale2x(self.anim.next())
+
+    def update(self, dt):
+        self.calculate_movement()
+        self.animate_slug()
 

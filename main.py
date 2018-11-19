@@ -17,7 +17,7 @@ class Scene():
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True
     def update(self, screen, dt):
-        self.sprite_group.update()
+        self.sprite_group.update(dt)
         self.draw(screen)
     def draw(self, screen):
         screen.fill((0,0,255))
