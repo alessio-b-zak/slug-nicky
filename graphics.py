@@ -1,6 +1,7 @@
 import pygame as pg
 from settings import *
 import os
+from spriteanim import *
 
 def clip(val, minval, maxval):
         return min(max(val, minval), maxval)
@@ -27,3 +28,5 @@ def clip_object(world_object_rect):
     world_object_rect.bottom  = clip(world_object_rect.bottom, 0, height)
     return world_object_rect
 
+def default_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,93,93), 4, -1, True, 12)

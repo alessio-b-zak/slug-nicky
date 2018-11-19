@@ -3,7 +3,6 @@ from graphics import *
 from assets import *
 from settings import *
 from enum import Enum
-from spriteanim import *
 
 def calculate_orientation(orientation):
     if orientation == 0:
@@ -36,43 +35,56 @@ class SlugSprite(pg.sprite.Sprite):
         self.image, self.rect = load_image(data_dir, sprite_name, -1)
         self.state = SlugState.IDLE
         self.prevstate = self.state
-        self.started_anim = False
+        self.lastwalkdir = None
+        self.changed_state = False
         self.anim = None
         self.gravity, self.movepos = calculate_orientation(orientation)
 
-    def calculate_movement(self):
-        keys = pg.key.get_pressed()
-        self.prevstate = self.state
-        if keys[pg.K_RIGHT]:
+    def apply_movement(self):
+        if self.state == SlugState.MOVING_RIGHT:
             newpos = self.rect.move(*self.movepos)
             self.rect = newpos
-            self.state = SlugState.MOVING_RIGHT
-        if keys[pg.K_LEFT]:
+        elif self.state == SlugState.MOVING_LEFT:
             newpos = self.rect.move(*(tuple(-1*x for x in self.movepos)))
             self.rect = newpos
-            self.state = SlugState.MOVING_LEFT
-        if not (keys[pg.K_RIGHT] or keys[pg.K_LEFT]):
-            self.state = SlugState.IDLE
-        if not (self.state == self.prevstate):
-            self.started_anim = False
         newpos =  self.rect.move(self.gravity)
         self.rect = newpos
         newpos = clip_object(self.rect)
         self.rect = newpos
 
+    def calculate_state(self):
+        keys = pg.key.get_pressed()
+        self.prevstate = self.state
+        if keys[pg.K_RIGHT]:
+            self.state = SlugState.MOVING_RIGHT
+        if keys[pg.K_LEFT]:
+            self.state = SlugState.MOVING_LEFT
+        if not (keys[pg.K_RIGHT] or keys[pg.K_LEFT]):
+            self.state = SlugState.IDLE
+        if not (self.state == self.prevstate):
+            self.changed_state = False
+        print(self.state)
+
     def animate_slug(self):
-        if self.state == SlugState.MOVING_RIGHT and not self.started_anim:
-            slug_walk = data_dir + "/" + slug_sprite_walk_1
-            self.anim = SpriteStripAnim(slug_walk, (0,0,93,93), 4, -1, True, 12)
-            self.started_anim = True
-        if self.state == SlugState.IDLE and not self.started_anim:
-            slug_idle = data_dir + "/" + slug_sprite_idle_1
-            self.anim = SpriteStripAnim(slug_idle, (0,0,93,93), 4, -1, True, 12)
-            self.started_anim = True
+        if self.state == SlugState.MOVING_RIGHT and not self.changed_state:
+            self.anim = default_animate(slug_walk)
+            self.changed_state = True
+            self.lastwalkdir = SlugState.MOVING_RIGHT
+        if self.state == SlugState.MOVING_LEFT and not self.changed_state:
+            self.anim = default_animate(slug_walk)
+            self.changed_state = True
+            self.lastwalkdir = SlugState.MOVING_LEFT
+        if self.state == SlugState.IDLE and not self.changed_state:
+            self.anim = default_animate(slug_idle)
+            self.changed_state = True
 
         self.image = pg.transform.scale2x(self.anim.next())
+        if (self.lastwalkdir == SlugState.MOVING_LEFT):
+            self.image = pg.transform.flip(self.image, True, False)
+
 
     def update(self, dt):
-        self.calculate_movement()
+        self.calculate_state()
+        self.apply_movement()
         self.animate_slug()
 
