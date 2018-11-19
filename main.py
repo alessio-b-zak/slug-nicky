@@ -1,41 +1,44 @@
 import pygame as pg
 import sys
 import os
+from assets import *
+from graphics import *
 
 data_dir = "./assets"
 
 
-slug_sprite = "slug_sprite.png"
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join(data_dir, name)
-    try:
-        image = pg.image.load(fullname)
-    except pygame.error:
-        print ('Cannot load image:', fullname)
-        raise SystemExit(str(geterror()))
-    image = image.convert()
-    if colorkey is not None:
-        if colorkey is -1:
-            colorkey = image.get_at((0,0))
-        image.set_colorkey(colorkey, pg.RLEACCEL)
-    return image, image.get_rect()
-
+class SlugSprite(pg.sprite.Sprite):
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self) #call Sprite initializer
+        self.image, self.rect = load_image(data_dir, slug_sprite, -1)
+        self.moving_left = False
+    def update(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_RIGHT]:
+            newpos = self.rect.move(10,0)
+            self.rect = newpos
+        if keys[pg.K_LEFT]:
+            newpos = self.rect.move(-10, 0)
+            self.rect = newpos
 
 
 
 class Scene():
+    def __init__(self):
+        slug_sprite = SlugSprite()
+        self.sprite_group = pg.sprite.Group()
+        self.sprite_group.add(slug_sprite)
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             print('Game State keydown')
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True
     def update(self, screen, dt):
+        self.sprite_group.update()
         self.draw(screen)
     def draw(self, screen):
         screen.fill((0,0,255))
-        image,_ = load_image(slug_sprite, -1)
-        screen.blit(image, (0,0))
+        self.sprite_group.draw(screen)
 
 
 
