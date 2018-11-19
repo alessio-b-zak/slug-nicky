@@ -5,31 +5,39 @@ from assets import *
 from graphics import *
 from settings import *
 from slug import *
+from slimeball import *
 
 class Scene():
     def __init__(self):
-        self.sprite_group = pg.sprite.LayeredUpdates()
+        self.slug_sprite_group = pg.sprite.LayeredUpdates()
+        self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         for i in range(0, 4):
-            self.sprite_group.add(SlugSprite(slug_sprite_char_1, i))
+            self.slug_sprite_group.add(SlugSprite(slug_sprite_char_1, i))
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             keys = pg.key.get_pressed()
             if keys[pg.K_1]:
-                sprite_loc = self.sprite_group.get_sprite(0).rect
+                sprite_loc = self.slug_sprite_group.get_sprite(0).rect
+                self.bullet_sprite_group.add(BulletSprite(bullet_still, 0, sprite_loc))
             if keys[pg.K_2]:
-                sprite_loc = self.sprite_group.get_sprite(1).rect
+                sprite_loc = self.slug_sprite_group.get_sprite(1).rect
+                self.bullet_sprite_group.add(BulletSprite(bullet_still, 1, sprite_loc))
             if keys[pg.K_3]:
-                sprite_loc = self.sprite_group.get_sprite(2).rect
+                sprite_loc = self.slug_sprite_group.get_sprite(2).rect
+                self.bullet_sprite_group.add(BulletSprite(bullet_still, 2, sprite_loc))
             if keys[pg.K_4]:
-                sprite_loc = self.sprite_group.get_sprite(3).rect
+                sprite_loc = self.slug_sprite_group.get_sprite(3).rect
+                self.bullet_sprite_group.add(BulletSprite(bullet_still, 3, sprite_loc))
 
     def update(self, screen, dt):
-        self.sprite_group.update(dt)
+        self.slug_sprite_group.update(dt)
+        self.bullet_sprite_group.update(dt)
         self.draw(screen)
     def draw(self, screen):
         background_im, _ = load_image(data_dir, background)
         screen.blit(background_im, [0,0])
-        self.sprite_group.draw(screen)
+        self.slug_sprite_group.draw(screen)
+        self.bullet_sprite_group.draw(screen)
 
 class Game:
     def __init__(self, **settings):

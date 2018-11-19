@@ -4,23 +4,6 @@ from assets import *
 from settings import *
 from enum import Enum
 
-def calculate_orientation(orientation):
-    if orientation == 0:
-        gravity = (slug_grav,0)
-        movepos = (0, -slug_speed)
-    elif orientation == 1:
-        gravity = (0,slug_grav)
-        movepos = (slug_speed, 0)
-    elif orientation == 2:
-        gravity = (-slug_grav, 0)
-        movepos = (0, slug_speed)
-    elif orientation == 3:
-        gravity = (0,-slug_grav)
-        movepos = (-slug_speed,0)
-    else:
-        print("fuck")
-        raise
-    return gravity, movepos
 
 class SlugState(Enum):
     MOVING_LEFT = 0
