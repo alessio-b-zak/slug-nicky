@@ -50,8 +50,15 @@ class Scene():
         if collide_dict:
             for key, value in collide_dict.items():
                 if not key.orientation == value[0].orientation:
-                    key.on_hit(value[0].orientation)
-                    value[0].on_hit(key.orientation)
+                    key.on_hit(value[0].orientation, CollisionType.BULLET)
+                    value[0].on_hit(key.orientation, CollisionType.BULLET)
+        collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.slime_sprite_group, False, False)
+        if collide_dict:
+            for key, value in collide_dict.items():
+                key.on_hit(value[0].orientation, CollisionType.SLIME)
+                value[0].on_hit(key.orientation, CollisionType.SLIME)
+
+
 
     def draw(self, screen):
         background_im, _ = load_image(data_dir, background)

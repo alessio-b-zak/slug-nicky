@@ -35,7 +35,7 @@ class BulletSprite(pg.sprite.Sprite):
         if is_off_screen(self.rect):
             self.state = BulletState.OFF_SCREEN
 
-    def on_hit(self, orientation):
+    def on_hit(self, orientation, collision_type):
         if not self.state == BulletState.EXPLODING:
             self.state = BulletState.EXPLODING
             self.enem_orient = orientation

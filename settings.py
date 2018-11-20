@@ -10,6 +10,10 @@ size = width, height = 1000, 1000
 data_dir = "./assets"
 
 
+class CollisionType(Enum):
+    SLIME = 0
+    BULLET = 1
+
 class MyEvent(Enum):
     CREATE_SLIME = 0
 

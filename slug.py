@@ -18,6 +18,8 @@ class SlugSprite(pg.sprite.Sprite):
         # self.image, self.rect = load_image(data_dir, sprite_name, -1)
         self.anim = slug_animate(slug_idle_small)
         self.image = pg.transform.scale2x(self.anim.next())
+        self.encumbered_timer = 0
+        self.encumbered = False
         self.rect = self.image.get_rect()
         self.rect.center = initial_position
         self.state = SlugState.IDLE
@@ -54,9 +56,9 @@ class SlugSprite(pg.sprite.Sprite):
             self.changed_state = False
         # print(self.state)
 
-    def on_hit(self, orientation):
-        pass
-        # print("Ouch i'm slug " + str(self.orientation))
+    def on_hit(self, orientation, collision_type):
+        if collision_type == CollisionType.SLIME:
+            self.encumbered = True
 
 
     def animate(self):
@@ -78,7 +80,12 @@ class SlugSprite(pg.sprite.Sprite):
         self.image = reorient(self.orientation, self.image)
 
     def update(self, dt):
+        if self.encumbered:
+            self.encumbered_timer += dt
+            if self.encumbered_timer > 2:
+                self.encumbered = False
+                self.encumbered_timer = 0
         self.calculate_state()
         self.apply_movement()
         self.animate()
-        print(self.rect.center)
+        # print(self.rect.center)
