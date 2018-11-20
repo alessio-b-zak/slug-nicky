@@ -4,7 +4,6 @@ from assets import *
 from settings import *
 from enum import Enum
 
-
 class BulletState(Enum):
     FIRING = 0
     HIT = 1
@@ -57,8 +56,6 @@ class BulletSprite(pg.sprite.Sprite):
                 pg.event.post(create_slime_event)
             self.kill()
 
-
     def update(self, dt):
         self.apply_movement()
         self.animate()
-

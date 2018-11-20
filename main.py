@@ -113,6 +113,8 @@ class Game:
         self.__dict__.update(settings)
         self.done = False
         self.screen = pg.display.set_mode(self.size)
+        pg.mixer.music.load(data_dir + "/" + song)
+        pg.mixer.music.play()
         self.clock = pg.time.Clock()
         self.state = Scene()
     def update(self, dt):
@@ -130,6 +132,8 @@ class Game:
             pg.display.update()
 
 if __name__ == '__main__':
+    pg.mixer.pre_init(44100, 16, 2, 4096)
+    pg.init()
     settings = {
         'size':(width, height),
         'fps' :60

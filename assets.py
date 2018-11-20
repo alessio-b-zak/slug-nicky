@@ -12,6 +12,7 @@ bullet_explode = "bullet_explosion.png"
 slime_sprite = "ground_slime.png"
 boss_animation = "boss_anim.png"
 background_animation = "background_animation.png"
+song = "song.wav"
 
 slug_idle = data_dir + "/" + slug_sprite_idle_1
 slug_walk = data_dir + "/" + slug_sprite_walk_1
