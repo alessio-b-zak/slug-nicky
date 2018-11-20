@@ -61,8 +61,6 @@ class Scene():
                 key.on_hit(value[0].orientation, CollisionType.SLIME)
                 value[0].on_hit(key.orientation, CollisionType.SLIME)
 
-
-
     def draw(self, screen):
         background_im = pg.transform.scale(load_image(data_dir, background)[0], (width, height))
         screen.blit(background_im, [0,0])

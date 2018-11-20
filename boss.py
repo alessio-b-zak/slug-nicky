@@ -11,8 +11,6 @@ class BossState(Enum):
     FIRING = 1
     MOVING = 2
 
-
-
 class BossSprite(pg.sprite.Sprite):
     def __init__(self, initial_position):
         pg.sprite.Sprite.__init__(self) #call Sprite initializer
@@ -21,7 +19,7 @@ class BossSprite(pg.sprite.Sprite):
         self.image = pg.transform.scale2x(self.anim.next())
         self.aimed_position = self.gen_rand_position()
         self.moving = True
-        self.epsilon = 10
+        self.epsilon = 150
         self.rect = self.image.get_rect()
         self.rect.center = initial_position
         self.state = BossState.IDLE
@@ -33,9 +31,13 @@ class BossSprite(pg.sprite.Sprite):
         return random.randint(0, width), random.randint(0, height)
 
     def apply_movement(self):
-        # if self.moving:
-        #     if (self.rect.center )
-        pass
+        if self.moving:
+            print(distance(self.rect.center, self.aimed_position))
+            if (distance(self.rect.center, self.aimed_position) < self.epsilon):
+                self.state = BossState.FIRING
+            else:
+                newpos = self.rect.move(move_to_point(self.rect.center, self.aimed_position, 60))
+                self.rect = newpos
 
     def on_hit(self, orientation, collision_type):
         pass

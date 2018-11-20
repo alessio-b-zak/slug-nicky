@@ -1,4 +1,5 @@
 import pygame as pg
+import math
 from enum import Enum
 
 slug_grav = 5
@@ -59,4 +60,11 @@ def reorient(orientation, image):
     if (orientation == 3):
         image = pg.transform.rotate(image, 180)
     return image
+
+
+def distance(source, target):
+    dist = math.sqrt((target[1]-source[1])**2 + (target[0]-source[0])**2)
+    return dist
+
+
 
