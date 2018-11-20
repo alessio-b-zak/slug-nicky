@@ -22,7 +22,9 @@ class BossSprite(pg.sprite.Sprite):
         self.aimed_position = self.gen_rand_position()
         self.orientation = -1
         self.last_person = None
+        self.last_person_loc = None
         self.health = 20
+        self.looking_left = False
         self.invul_timer = 0
         self.epsilon = 150
         self.rect = self.image.get_rect()
@@ -43,16 +45,23 @@ class BossSprite(pg.sprite.Sprite):
         pg.event.post(create_laser_event)
         #take damage at point
 
+
     def apply_movement(self):
         if self.state == BossState.MOVING:
             if (distance(self.rect.center, self.aimed_position) < self.epsilon):
                 self.state = BossState.FIRING
                 self.aimed_position = self.gen_rand_position()
+                self.fire_laser()
             else:
-                newpos = self.rect.move(move_to_point(self.rect.center, self.aimed_position, 60))
+                point = move_to_point(self.rect.center, self.aimed_position, 60)
+                if point[0] >= 0:
+                    self.looking_left = True
+                else:
+                    self.looking_left = False
+                newpos = self.rect.move(point)
                 self.rect = newpos
         elif self.state == BossState.FIRING:
-            self.fire_laser()
+            self.looking_left = self.rect.center <= self.last_person_loc
             self.state = BossState.WAITING
 
     def on_hit(self, orientation, collision_type):
@@ -63,11 +72,13 @@ class BossSprite(pg.sprite.Sprite):
     def animate(self):
         try:
             self.image = pg.transform.scale2x(self.anim.next())
+            if (self.looking_left):
+                self.image = pg.transform.flip(self.image, True, False)
         except:
             self.kill()
 
     def check_health(self):
-        print("Boss Health: " + str(self.health))
+        # print("Boss Health: " + str(self.health))
         if self.health <= 0 and self.state != BossState.DYING:
             self.state = BossState.DYING
             self.anim = snail_death(snail_die_anim)

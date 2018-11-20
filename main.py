@@ -59,6 +59,8 @@ class Scene():
                     else:
                         self.laser_sprite_group.add((LaserSprite(nearest_loc)))
                         self.boss_sprite.last_person = near_orientation
+                    print(nearest_loc)
+                    self.boss_sprite.last_person_loc = nearest_loc
             if event.dict["event_id"] == MyEvent.LASER_EXPLODING:
                 self.check_explode_collisions = True
             if event.dict["event_id"] == MyEvent.LASER_EXPLODE:
