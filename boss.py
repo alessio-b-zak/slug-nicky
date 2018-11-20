@@ -11,6 +11,7 @@ class BossState(Enum):
     FIRING = 1
     MOVING = 2
     WAITING = 3
+    DYING = 4
 
 class BossSprite(pg.sprite.Sprite):
     def __init__(self, initial_position):
@@ -21,7 +22,7 @@ class BossSprite(pg.sprite.Sprite):
         self.aimed_position = self.gen_rand_position()
         self.orientation = -1
         self.last_person = None
-        self.health = 100
+        self.health = 1
         self.invul_timer = 0
         self.epsilon = 150
         self.rect = self.image.get_rect()
@@ -58,18 +59,25 @@ class BossSprite(pg.sprite.Sprite):
         if self.invul_timer > 0.5:
             self.health -= 1
             self.invul_timer = 0
-        pass
 
     def animate(self):
-        self.image = pg.transform.scale2x(self.anim.next())
+        try:
+            print("retrieving next thing")
+            self.image = pg.transform.scale2x(self.anim.next())
+        except:
+            print("here")
+            self.kill()
 
     def check_health(self):
         print("Boss Health: " + str(self.health))
-        if self.health < 0:
-            pass
+        if self.health <= 0 and self.state != BossState.DYING:
+            self.state = BossState.DYING
+            self.anim = snail_death(snail_die_anim)
 
     def update(self, dt):
-        self.apply_movement()
-        self.invul_timer += dt
-        self.check_health()
+        if self.state != BossState.DYING:
+            print("here")
+            self.apply_movement()
+            self.invul_timer += dt
+            self.check_health()
         self.animate()

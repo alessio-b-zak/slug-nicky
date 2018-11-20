@@ -31,3 +31,4 @@ background_anim = data_dir + "/" + background_animation
 
 
 slug_die_anim = data_dir + "/" + slug_die
+snail_die_anim = data_dir + "/" + snail_die
