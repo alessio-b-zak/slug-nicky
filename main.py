@@ -64,10 +64,7 @@ class Scene():
                 self.check_explode_collisions = False
                 self.boss_sprite.start_moving()
             if event.dict["event_id"] == MyEvent.FIRE_CANNON:
-                print("fired cannon")
                 self.bullet_sprite_group.add(BulletSprite(event.dict["orientation"], event.dict["location"]))
-
-
 
     def update(self, screen, dt):
         for group in self.sprite_groups:
@@ -93,9 +90,10 @@ class Scene():
         collide_dict = pg.sprite.groupcollide(self.boss_sprite_group, self.bullet_sprite_group, False, False)
         if collide_dict:
             for key, value in collide_dict.items():
-                key.on_hit(value[0].orientation, CollisionType.BOSS)
                 for bullet in value:
-                    bullet.on_hit(key.orientation, CollisionType.BOSS)
+                    if bullet.state == BulletState.FIRING:
+                        key.on_hit(value[0].orientation, CollisionType.BOSS)
+                        bullet.on_hit(key.orientation, CollisionType.BOSS)
         #explosion slug collisions
         collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.laser_sprite_group, False, False)
         if self.check_explode_collisions:

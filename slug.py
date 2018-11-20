@@ -65,7 +65,6 @@ class SlugSprite(pg.sprite.Sprite):
             self.state = SlugState.IDLE
         if not (self.state == self.prevstate):
             self.changed_state = False
-        # print(self.state)
 
     def on_hit(self, orientation, collision_type):
         if collision_type == CollisionType.SLIME:
@@ -111,4 +110,3 @@ class SlugSprite(pg.sprite.Sprite):
         if self.shot_timer > 1:
             self.check_fire()
         self.animate()
-        # print(self.rect.center)
