@@ -44,21 +44,7 @@ class Scene():
         return min_pos, nearest_orientation
 
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
-            keys = pg.key.get_pressed()
-            if keys[pg.K_1]:
-                sprite_loc = self.slug_sprite_group.get_sprite(0).rect.center
-                self.bullet_sprite_group.add(BulletSprite(0, sprite_loc))
-            if keys[pg.K_2]:
-                sprite_loc = self.slug_sprite_group.get_sprite(1).rect.center
-                self.bullet_sprite_group.add(BulletSprite(1, sprite_loc))
-            if keys[pg.K_3]:
-                sprite_loc = self.slug_sprite_group.get_sprite(2).rect.center
-                self.bullet_sprite_group.add(BulletSprite(2, sprite_loc))
-            if keys[pg.K_4]:
-                sprite_loc = self.slug_sprite_group.get_sprite(3).rect.center
-                self.bullet_sprite_group.add(BulletSprite(3, sprite_loc))
-        elif event.type == pg.USEREVENT:
+        if event.type == pg.USEREVENT:
             if event.dict["event_id"] == MyEvent.CREATE_SLIME:
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
             if event.dict["event_id"] == MyEvent.FIRE_LASER:
@@ -77,6 +63,11 @@ class Scene():
             if event.dict["event_id"] == MyEvent.LASER_EXPLODE:
                 self.check_explode_collisions = False
                 self.boss_sprite.start_moving()
+            if event.dict["event_id"] == MyEvent.FIRE_CANNON:
+                print("fired cannon")
+                self.bullet_sprite_group.add(BulletSprite(event.dict["orientation"], event.dict["location"]))
+
+
 
     def update(self, screen, dt):
         for group in self.sprite_groups:

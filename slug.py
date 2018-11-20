@@ -23,6 +23,7 @@ class SlugSprite(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = initial_position
         self.state = SlugState.IDLE
+        self.shot_timer = 0
         self.prevstate = self.state
         self.orientation = orientation
         self.lastwalkdir = None
@@ -91,7 +92,15 @@ class SlugSprite(pg.sprite.Sprite):
             self.image = pg.transform.flip(self.image, True, False)
         self.image = reorient(self.orientation, self.image)
 
+    def check_fire(self):
+        keys = pg.key.get_pressed()
+        if keys[self.fire_key]:
+            fire_event_create = pg.event.Event(pg.USEREVENT, {"event_id": MyEvent.FIRE_CANNON, "location": self.rect.center, "orientation": self.orientation})
+            pg.event.post(fire_event_create)
+            self.shot_timer = 0
+
     def update(self, dt):
+        self.shot_timer += dt
         if self.encumbered:
             self.encumbered_timer += dt
             if self.encumbered_timer > 2:
@@ -99,5 +108,7 @@ class SlugSprite(pg.sprite.Sprite):
                 self.encumbered_timer = 0
         self.calculate_state()
         self.apply_movement()
+        if self.shot_timer > 1:
+            self.check_fire()
         self.animate()
         # print(self.rect.center)

@@ -28,6 +28,7 @@ class MyEvent(Enum):
     FIRE_LASER = 1
     LASER_EXPLODING = 2
     LASER_EXPLODE = 3
+    FIRE_CANNON = 4
 
 orientation0_controls = (pg.K_s, pg.K_w, pg.K_1)
 orientation1_controls = (pg.K_LEFT, pg.K_RIGHT, pg.K_2)
