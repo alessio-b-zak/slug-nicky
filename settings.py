@@ -20,6 +20,7 @@ def move_to_point(origin, destination, fps):
 class CollisionType(Enum):
     SLIME = 0
     BULLET = 1
+    BOSS = 2
 
 class MyEvent(Enum):
     CREATE_SLIME = 0

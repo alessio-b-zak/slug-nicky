@@ -82,17 +82,29 @@ class Scene():
         self.draw(screen)
 
     def calculate_collisions(self):
+        #bullet slug collisions
         collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.bullet_sprite_group, False, False)
         if collide_dict:
             for key, value in collide_dict.items():
                 if not key.orientation == value[0].orientation:
                     key.on_hit(value[0].orientation, CollisionType.BULLET)
                     value[0].on_hit(key.orientation, CollisionType.BULLET)
+        #slug slime collisions
         collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.slime_sprite_group, False, False)
         if collide_dict:
             for key, value in collide_dict.items():
                 key.on_hit(value[0].orientation, CollisionType.SLIME)
                 value[0].on_hit(key.orientation, CollisionType.SLIME)
+        #bullet boss collisions
+        collide_dict = pg.sprite.groupcollide(self.boss_sprite_group, self.bullet_sprite_group, False, False)
+        if collide_dict:
+            for key, value in collide_dict.items():
+                key.on_hit(value[0].orientation, CollisionType.BOSS)
+                for bullet in value:
+                    bullet.on_hit(key.orientation, CollisionType.BOSS)
+        #explosion slug collisions
+
+
 
     def draw(self, screen):
         for group in self.sprite_groups:

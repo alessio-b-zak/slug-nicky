@@ -19,6 +19,7 @@ class BossSprite(pg.sprite.Sprite):
         self.anim = boss_animate(boss_anim)
         self.image = pg.transform.scale2x(self.anim.next())
         self.aimed_position = self.gen_rand_position()
+        self.orientation = -1
         self.last_person = None
         self.epsilon = 150
         self.rect = self.image.get_rect()
@@ -29,14 +30,12 @@ class BossSprite(pg.sprite.Sprite):
         self.changed_state = False
 
     def gen_rand_position(self):
-        return random.randint(0, width), random.randint(0, height)
+        return random.randint(0+100, width-100), random.randint(0+100, height-100)
 
     def start_moving(self):
-        print("made it in here")
         self.state = BossState.MOVING
 
     def fire_laser(self):
-        print("created event")
         create_laser_event = pg.event.Event(pg.USEREVENT, {"event_id": MyEvent.FIRE_LASER})
         pg.event.post(create_laser_event)
         #take damage at point
@@ -50,7 +49,6 @@ class BossSprite(pg.sprite.Sprite):
                 newpos = self.rect.move(move_to_point(self.rect.center, self.aimed_position, 60))
                 self.rect = newpos
         elif self.state == BossState.FIRING:
-            print("firing")
             self.fire_laser()
             self.state = BossState.WAITING
 

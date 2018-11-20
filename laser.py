@@ -15,7 +15,6 @@ class LaserSprite(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = ATOM_IMG
         self.rect = self.image.get_rect(center=init_location)
-        print("created")
         self.current_time = 0
 
     def update(self, dt):

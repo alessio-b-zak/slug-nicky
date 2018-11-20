@@ -52,8 +52,9 @@ class BulletSprite(pg.sprite.Sprite):
         try:
             self.image = pg.transform.scale2x(self.anim.next())
         except:
-            create_slime_event = pg.event.Event(pg.USEREVENT,{"event_id": MyEvent.CREATE_SLIME, "orientation": self.enem_orient, "location": self.rect.center})
-            pg.event.post(create_slime_event)
+            if not self.enem_orient == -1:
+                create_slime_event = pg.event.Event(pg.USEREVENT,{"event_id": MyEvent.CREATE_SLIME, "orientation": self.enem_orient, "location": self.rect.center})
+                pg.event.post(create_slime_event)
             self.kill()
 
 
