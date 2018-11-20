@@ -26,6 +26,7 @@ class Scene():
         self.slug_sprite_group.add(SlugSprite(2, (0, height/2)))
         self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
         self.boss_sprite = BossSprite((width/2, height/2))
+        self.check_explode_collisions = False
         self.boss_sprite_group.add(self.boss_sprite)
         self.background_sprite_group.add(BackgroundSprite())
 
@@ -71,8 +72,10 @@ class Scene():
                 else:
                     self.laser_sprite_group.add((LaserSprite(nearest_loc)))
                     self.boss_sprite.last_person = near_orientation
-
+            if event.dict["event_id"] == MyEvent.LASER_EXPLODING:
+                self.check_explode_collisions = True
             if event.dict["event_id"] == MyEvent.LASER_EXPLODE:
+                self.check_explode_collisions = False
                 self.boss_sprite.start_moving()
 
     def update(self, screen, dt):
@@ -103,8 +106,13 @@ class Scene():
                 for bullet in value:
                     bullet.on_hit(key.orientation, CollisionType.BOSS)
         #explosion slug collisions
-
-
+        collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.laser_sprite_group, False, False)
+        if self.check_explode_collisions:
+            if collide_dict:
+                print("collisions")
+                for key, value in collide_dict.items():
+                    key.on_hit(value[0].orientation, CollisionType.LASER)
+                    value[0].on_hit(key.orientation, CollisionType.LASER)
 
     def draw(self, screen):
         for group in self.sprite_groups:

@@ -21,6 +21,7 @@ class BossSprite(pg.sprite.Sprite):
         self.aimed_position = self.gen_rand_position()
         self.orientation = -1
         self.last_person = None
+        self.health = 100
         self.epsilon = 150
         self.rect = self.image.get_rect()
         self.rect.center = initial_position
@@ -53,10 +54,16 @@ class BossSprite(pg.sprite.Sprite):
             self.state = BossState.WAITING
 
     def on_hit(self, orientation, collision_type):
+        self.health -= 1
         pass
 
     def animate(self):
         self.image = pg.transform.scale2x(self.anim.next())
+
+    def check_health(self):
+        if self.health < 0:
+            pass
+
 
     def update(self, dt):
         self.apply_movement()

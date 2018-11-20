@@ -30,6 +30,7 @@ class SlugSprite(pg.sprite.Sprite):
         self.gravity, self.movepos, self.controls = calculate_orientation(orientation)
         self.left_key = self.controls[0]
         self.right_key = self.controls[1]
+        self.fire_key = self.controls[2]
 
     def apply_movement(self):
         if not self.encumbered:
@@ -68,6 +69,8 @@ class SlugSprite(pg.sprite.Sprite):
     def on_hit(self, orientation, collision_type):
         if collision_type == CollisionType.SLIME:
             self.encumbered = True
+        if collision_type == CollisionType.LASER:
+            self.kill()
 
 
     def animate(self):

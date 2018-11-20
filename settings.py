@@ -21,16 +21,18 @@ class CollisionType(Enum):
     SLIME = 0
     BULLET = 1
     BOSS = 2
+    LASER = 3
 
 class MyEvent(Enum):
     CREATE_SLIME = 0
     FIRE_LASER = 1
-    LASER_EXPLODE = 2
+    LASER_EXPLODING = 2
+    LASER_EXPLODE = 3
 
-orientation0_controls = (pg.K_s, pg.K_w)
-orientation1_controls = (pg.K_LEFT, pg.K_RIGHT)
-orientation2_controls = (pg.K_u, pg.K_j)
-orientation3_controls = (pg.K_c, pg.K_x)
+orientation0_controls = (pg.K_s, pg.K_w, pg.K_1)
+orientation1_controls = (pg.K_LEFT, pg.K_RIGHT, pg.K_2)
+orientation2_controls = (pg.K_u, pg.K_j, pg.K_3)
+orientation3_controls = (pg.K_c, pg.K_x, pg.K_4)
 
 def calculate_orientation(orientation):
     if orientation == 0:
