@@ -7,7 +7,7 @@ from enum import Enum
 
 
 class BossState(Enum):
-    IDLE = 0
+    HURT = 0
     FIRING = 1
     MOVING = 2
 
@@ -18,11 +18,11 @@ class BossSprite(pg.sprite.Sprite):
         self.anim = boss_animate(boss_anim)
         self.image = pg.transform.scale2x(self.anim.next())
         self.aimed_position = self.gen_rand_position()
-        self.moving = True
         self.epsilon = 150
         self.rect = self.image.get_rect()
+        self.nearest_enemy = None
         self.rect.center = initial_position
-        self.state = BossState.IDLE
+        self.state = BossState.MOVING
         self.prevstate = self.state
         self.lastwalkdir = None
         self.changed_state = False
@@ -30,14 +30,24 @@ class BossSprite(pg.sprite.Sprite):
     def gen_rand_position(self):
         return random.randint(0, width), random.randint(0, height)
 
+    def fire_laser(self):
+        print("created event")
+        create_laser_event = pg.event.Event(pg.USEREVENT, {"event_id": MyEvent.FIRE_LASER})
+        pg.event.post(create_laser_event)
+        #take damage at point
+
     def apply_movement(self):
-        if self.moving:
-            print(distance(self.rect.center, self.aimed_position))
+        if self.state == BossState.MOVING:
             if (distance(self.rect.center, self.aimed_position) < self.epsilon):
                 self.state = BossState.FIRING
             else:
                 newpos = self.rect.move(move_to_point(self.rect.center, self.aimed_position, 60))
                 self.rect = newpos
+        elif self.state == BossState.FIRING:
+            print("firing")
+            self.fire_laser()
+            self.state = BossState.HURT
+
 
     def on_hit(self, orientation, collision_type):
         pass

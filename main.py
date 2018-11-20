@@ -22,6 +22,18 @@ class Scene():
         self.slug_sprite_group.add(SlugSprite(2, (0, height/2)))
         self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
         self.boss_sprite_group.add(BossSprite((width/2, height/2)))
+        self.fire_laser = False
+
+    def calculate_nearest(self):
+        boss_sprite_loc = self.boss_sprite_group.sprites()[0].rect.center
+        min_dist = sys.maxsize
+        min_pos = None
+        for slug in self.slug_sprite_group.sprites():
+            dist = distance(boss_sprite_loc,slug.rect.center)
+            if dist < min_dist:
+                min_dist = dist
+                min_pos = slug.rect.center
+        return min_pos
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
@@ -41,11 +53,15 @@ class Scene():
         elif event.type == pg.USEREVENT:
             if event.dict["event_id"] == MyEvent.CREATE_SLIME:
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
+            if event.dict["event_id"] == MyEvent.FIRE_LASER:
+                self.fire_laser = True
 
     def update(self, screen, dt):
         for group in self.sprite_groups:
             group.update(dt)
         self.calculate_collisions()
+        nearest = self.calculate_nearest()
+        self.boss_sprite_group.sprites()[0].nearest_enemy = nearest
         self.draw(screen)
 
     def calculate_collisions(self):
@@ -66,6 +82,10 @@ class Scene():
         screen.blit(background_im, [0,0])
         for group in self.sprite_groups:
             group.draw(screen)
+        if self.fire_laser:
+            print("firing laser")
+            pg.draw.circle(screen, (255,0,0),self.boss_sprite_group.sprites()[0].nearest_enemy, 10)
+            self.fire_laser = False
 
 class Game:
     def __init__(self, **settings):
