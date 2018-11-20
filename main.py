@@ -25,19 +25,22 @@ class Scene():
         self.slug_sprite_group.add(SlugSprite(1, (width/2, height)))
         self.slug_sprite_group.add(SlugSprite(2, (0, height/2)))
         self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
-        self.boss_sprite_group.add(BossSprite((width/2, height/2)))
+        self.boss_sprite = BossSprite((width/2, height/2))
+        self.boss_sprite_group.add(self.boss_sprite)
         self.background_sprite_group.add(BackgroundSprite())
 
     def calculate_nearest(self):
-        boss_sprite_loc = self.boss_sprite_group.sprites()[0].rect.center
+        boss_sprite_loc = self.boss_sprite.rect.center
         min_dist = sys.maxsize
         min_pos = None
+        nearest_orientation = None
         for slug in self.slug_sprite_group.sprites():
             dist = distance(boss_sprite_loc,slug.rect.center)
             if dist < min_dist:
                 min_dist = dist
                 min_pos = slug.rect.center
-        return min_pos
+                nearest_orientation = slug.orientation
+        return min_pos, nearest_orientation
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
@@ -58,7 +61,19 @@ class Scene():
             if event.dict["event_id"] == MyEvent.CREATE_SLIME:
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
             if event.dict["event_id"] == MyEvent.FIRE_LASER:
-                self.laser_sprite_group.add((LaserSprite(self.calculate_nearest())))
+                nearest_loc, near_orientation = self.calculate_nearest()
+                if not self.boss_sprite.last_person == None:
+                    if not self.boss_sprite.last_person == near_orientation:
+                        self.laser_sprite_group.add((LaserSprite(nearest_loc)))
+                        self.boss_sprite.last_person = near_orientation
+                    else:
+                        self.boss_sprite.start_moving()
+                else:
+                    self.laser_sprite_group.add((LaserSprite(nearest_loc)))
+                    self.boss_sprite.last_person = near_orientation
+
+            if event.dict["event_id"] == MyEvent.LASER_EXPLODE:
+                self.boss_sprite.start_moving()
 
     def update(self, screen, dt):
         for group in self.sprite_groups:
