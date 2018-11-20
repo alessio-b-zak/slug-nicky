@@ -48,16 +48,17 @@ class Scene():
             if event.dict["event_id"] == MyEvent.CREATE_SLIME:
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
             if event.dict["event_id"] == MyEvent.FIRE_LASER:
-                nearest_loc, near_orientation = self.calculate_nearest()
-                if not self.boss_sprite.last_person == None:
-                    if not self.boss_sprite.last_person == near_orientation:
+                if len(self.slug_sprite_group.sprites()) != 0:
+                    nearest_loc, near_orientation = self.calculate_nearest()
+                    if not self.boss_sprite.last_person == None:
+                        if not self.boss_sprite.last_person == near_orientation:
+                            self.laser_sprite_group.add((LaserSprite(nearest_loc)))
+                            self.boss_sprite.last_person = near_orientation
+                        else:
+                            self.boss_sprite.start_moving()
+                    else:
                         self.laser_sprite_group.add((LaserSprite(nearest_loc)))
                         self.boss_sprite.last_person = near_orientation
-                    else:
-                        self.boss_sprite.start_moving()
-                else:
-                    self.laser_sprite_group.add((LaserSprite(nearest_loc)))
-                    self.boss_sprite.last_person = near_orientation
             if event.dict["event_id"] == MyEvent.LASER_EXPLODING:
                 self.check_explode_collisions = True
             if event.dict["event_id"] == MyEvent.LASER_EXPLODE:
