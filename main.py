@@ -3,6 +3,7 @@ import sys
 import os
 from assets import *
 from graphics import *
+from boss import *
 from settings import *
 from slug import *
 from slime import *
@@ -10,15 +11,17 @@ from slimeball import *
 
 class Scene():
     def __init__(self):
+        self.boss_sprite_group = pg.sprite.LayeredUpdates()
         self.slug_sprite_group = pg.sprite.LayeredUpdates()
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         self.slime_sprite_group = pg.sprite.LayeredUpdates()
-        self.sprite_groups = [self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
+        self.sprite_groups = [self.boss_sprite_group, self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
         # for i in range(0, 4):
-        self.slug_sprite_group.add(SlugSprite(0, (927, 508)))
-        self.slug_sprite_group.add(SlugSprite(1, (500, 927)))
-        self.slug_sprite_group.add(SlugSprite(2, (0, 508)))
-        self.slug_sprite_group.add(SlugSprite(3, (508, 0)))
+        self.slug_sprite_group.add(SlugSprite(0, (width, height/2)))
+        self.slug_sprite_group.add(SlugSprite(1, (width/2, height)))
+        self.slug_sprite_group.add(SlugSprite(2, (0, height/2)))
+        self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
+        self.boss_sprite_group.add(BossSprite((width/2, height/2)))
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
@@ -61,7 +64,7 @@ class Scene():
 
 
     def draw(self, screen):
-        background_im, _ = load_image(data_dir, background)
+        background_im = pg.transform.scale(load_image(data_dir, background)[0], (width, height))
         screen.blit(background_im, [0,0])
         for group in self.sprite_groups:
             group.draw(screen)

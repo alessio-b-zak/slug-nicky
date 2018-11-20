@@ -43,3 +43,7 @@ def slug_animate(sprite_sheet):
 
 def bullet_explode_animate(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0,62,62), 4, -1, False, 12)
+
+def boss_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,140,140), 4, -1, True, 5)
+
