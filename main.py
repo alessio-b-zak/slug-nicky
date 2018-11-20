@@ -162,7 +162,7 @@ class Game:
         self.title = False
         self.screen = pg.display.set_mode(self.size)
         pg.mixer.music.load(data_dir + "/" + song)
-        pg.mixer.music.play()
+        pg.mixer.music.play(loops=-1)
         self.clock = pg.time.Clock()
         self.state = TitleScene()
     def update(self, dt):

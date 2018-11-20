@@ -32,8 +32,8 @@ class MyEvent(Enum):
 
 orientation0_controls = (pg.K_s, pg.K_w, pg.K_d)
 orientation1_controls = (pg.K_LEFT, pg.K_RIGHT, pg.K_UP)
-orientation2_controls = (pg.K_u, pg.K_j, pg.K_l)
-orientation3_controls = (pg.K_b, pg.K_v, pg.K_4)
+orientation2_controls = (pg.K_u, pg.K_j, pg.K_k)
+orientation3_controls = (pg.K_g, pg.K_f, pg.K_v)
 
 def calculate_orientation(orientation):
     if orientation == 0:
