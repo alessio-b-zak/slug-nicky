@@ -26,13 +26,16 @@ class BulletSprite(pg.sprite.Sprite):
         self.gravity = tuple(-bullet_speed*x for x in self.gravity)
 
     def apply_movement(self):
-        if self.state == BulletState.OFF_SCREEN:
-            self.kill()
         if self.state == BulletState.FIRING:
             newpos = self.rect.move(self.gravity)
             self.rect = newpos
         if is_off_screen(self.rect):
-            self.state = BulletState.OFF_SCREEN
+            self.enem_orient = calc_opposite_orient(self.orientation)
+            self.state = BulletState.EXPLODING
+            self.animating = False
+            newpos = clip_object(self.rect)
+            self.rect = newpos
+
 
     def on_hit(self, orientation, collision_type):
         if not self.state == BulletState.EXPLODING:

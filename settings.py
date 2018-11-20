@@ -67,6 +67,15 @@ def reorient(orientation, image):
         image = pg.transform.rotate(image, 180)
     return image
 
+def calc_opposite_orient(orientation):
+    if (orientation == 0):
+        return 2
+    if (orientation == 1):
+        return 3
+    if (orientation == 2):
+        return 0
+    if (orientation == 3):
+        return 1
 
 def distance(source, target):
     dist = math.sqrt((target[1]-source[1])**2 + (target[0]-source[0])**2)
