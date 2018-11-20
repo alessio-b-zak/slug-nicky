@@ -11,6 +11,7 @@ bullet_animation_small = "bullet_animation_small.png"
 bullet_explode = "bullet_explosion.png"
 slime_sprite = "ground_slime.png"
 boss_animation = "boss_anim.png"
+background_animation = "background_animation.png"
 
 slug_idle = data_dir + "/" + slug_sprite_idle_1
 slug_walk = data_dir + "/" + slug_sprite_walk_1
@@ -20,3 +21,4 @@ bullet_anim = data_dir + "/" + bullet_animation
 bullet_anim_small = data_dir + "/" + bullet_animation_small
 bullet_explode_anim = data_dir + "/" + bullet_explode
 boss_anim = data_dir + "/" + boss_animation
+background_anim = data_dir + "/" + background_animation

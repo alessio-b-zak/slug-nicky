@@ -47,3 +47,5 @@ def bullet_explode_animate(sprite_sheet):
 def boss_animate(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0,140,140), 4, -1, True, 5)
 
+def background_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0, 500,500), 20, loop=True, frames=9)

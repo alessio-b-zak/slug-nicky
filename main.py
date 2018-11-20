@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import os
 from assets import *
+from background import *
 from graphics import *
 from boss import *
 from settings import *
@@ -9,19 +10,22 @@ from slug import *
 from slime import *
 from slimeball import *
 
+
 class Scene():
     def __init__(self):
+        self.background_sprite_group = pg.sprite.LayeredUpdates()
         self.boss_sprite_group = pg.sprite.LayeredUpdates()
         self.slug_sprite_group = pg.sprite.LayeredUpdates()
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         self.slime_sprite_group = pg.sprite.LayeredUpdates()
-        self.sprite_groups = [self.boss_sprite_group, self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
+        self.sprite_groups = [self.background_sprite_group,self.boss_sprite_group, self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
         # for i in range(0, 4):
         self.slug_sprite_group.add(SlugSprite(0, (width, height/2)))
         self.slug_sprite_group.add(SlugSprite(1, (width/2, height)))
         self.slug_sprite_group.add(SlugSprite(2, (0, height/2)))
         self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
         self.boss_sprite_group.add(BossSprite((width/2, height/2)))
+        self.background_sprite_group.add(BackgroundSprite())
         self.fire_laser = False
 
     def calculate_nearest(self):
@@ -55,13 +59,12 @@ class Scene():
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
             if event.dict["event_id"] == MyEvent.FIRE_LASER:
                 self.fire_laser = True
+                self.boss_sprite_group.sprites()[0].nearest_enemy = self.calculate_nearest()
 
     def update(self, screen, dt):
         for group in self.sprite_groups:
             group.update(dt)
         self.calculate_collisions()
-        nearest = self.calculate_nearest()
-        self.boss_sprite_group.sprites()[0].nearest_enemy = nearest
         self.draw(screen)
 
     def calculate_collisions(self):
@@ -78,14 +81,10 @@ class Scene():
                 value[0].on_hit(key.orientation, CollisionType.SLIME)
 
     def draw(self, screen):
-        background_im = pg.transform.scale(load_image(data_dir, background)[0], (width, height))
-        screen.blit(background_im, [0,0])
         for group in self.sprite_groups:
             group.draw(screen)
         if self.fire_laser:
-            print("firing laser")
             pg.draw.circle(screen, (255,0,0),self.boss_sprite_group.sprites()[0].nearest_enemy, 10)
-            self.fire_laser = False
 
 class Game:
     def __init__(self, **settings):
