@@ -20,7 +20,6 @@ class BossSprite(pg.sprite.Sprite):
         self.aimed_position = self.gen_rand_position()
         self.epsilon = 150
         self.rect = self.image.get_rect()
-        self.nearest_enemy = None
         self.rect.center = initial_position
         self.state = BossState.MOVING
         self.prevstate = self.state

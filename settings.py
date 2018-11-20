@@ -24,6 +24,7 @@ class CollisionType(Enum):
 class MyEvent(Enum):
     CREATE_SLIME = 0
     FIRE_LASER = 1
+    LASER_EXPLODE = 2
 
 orientation0_controls = (pg.K_s, pg.K_w)
 orientation1_controls = (pg.K_LEFT, pg.K_RIGHT)

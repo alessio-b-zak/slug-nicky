@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import os
 from assets import *
+from laser import *
 from background import *
 from graphics import *
 from boss import *
@@ -10,7 +11,6 @@ from slug import *
 from slime import *
 from slimeball import *
 
-
 class Scene():
     def __init__(self):
         self.background_sprite_group = pg.sprite.LayeredUpdates()
@@ -18,7 +18,8 @@ class Scene():
         self.slug_sprite_group = pg.sprite.LayeredUpdates()
         self.bullet_sprite_group = pg.sprite.LayeredUpdates()
         self.slime_sprite_group = pg.sprite.LayeredUpdates()
-        self.sprite_groups = [self.background_sprite_group,self.boss_sprite_group, self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group]
+        self.laser_sprite_group = pg.sprite.LayeredUpdates()
+        self.sprite_groups = [self.background_sprite_group,self.boss_sprite_group, self.slug_sprite_group, self.bullet_sprite_group, self.slime_sprite_group, self.laser_sprite_group]
         # for i in range(0, 4):
         self.slug_sprite_group.add(SlugSprite(0, (width, height/2)))
         self.slug_sprite_group.add(SlugSprite(1, (width/2, height)))
@@ -26,7 +27,6 @@ class Scene():
         self.slug_sprite_group.add(SlugSprite(3, (width/2, 0)))
         self.boss_sprite_group.add(BossSprite((width/2, height/2)))
         self.background_sprite_group.add(BackgroundSprite())
-        self.fire_laser = False
 
     def calculate_nearest(self):
         boss_sprite_loc = self.boss_sprite_group.sprites()[0].rect.center
@@ -58,8 +58,7 @@ class Scene():
             if event.dict["event_id"] == MyEvent.CREATE_SLIME:
                 self.slime_sprite_group.add(SlimeSprite(event.dict["orientation"], event.dict["location"]))
             if event.dict["event_id"] == MyEvent.FIRE_LASER:
-                self.fire_laser = True
-                self.boss_sprite_group.sprites()[0].nearest_enemy = self.calculate_nearest()
+                self.laser_sprite_group.add((LaserSprite(self.calculate_nearest())))
 
     def update(self, screen, dt):
         for group in self.sprite_groups:
@@ -83,8 +82,6 @@ class Scene():
     def draw(self, screen):
         for group in self.sprite_groups:
             group.draw(screen)
-        if self.fire_laser:
-            pg.draw.circle(screen, (255,0,0),self.boss_sprite_group.sprites()[0].nearest_enemy, 10)
 
 class Game:
     def __init__(self, **settings):
