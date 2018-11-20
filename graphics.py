@@ -49,3 +49,7 @@ def boss_animate(sprite_sheet):
 
 def background_animate(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0, 500,500), 20, loop=True, frames=9)
+
+def slug_death(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,73,73), 3, -1, False, 12)
+

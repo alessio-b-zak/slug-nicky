@@ -11,6 +11,7 @@ class SlugState(Enum):
     JUMPING = 2
     FIRING = 3
     IDLE = 4
+    DYING = 5
 
 class SlugSprite(pg.sprite.Sprite):
     def __init__(self, orientation, initial_position):
@@ -70,8 +71,8 @@ class SlugSprite(pg.sprite.Sprite):
         if collision_type == CollisionType.SLIME:
             self.encumbered = True
         if collision_type == CollisionType.LASER:
-            self.kill()
-
+            self.state = SlugState.DYING
+            self.changed_state = False
 
     def animate(self):
         if self.state == SlugState.MOVING_RIGHT and not self.changed_state:
@@ -85,11 +86,17 @@ class SlugSprite(pg.sprite.Sprite):
         if self.state == SlugState.IDLE and not self.changed_state:
             self.anim = slug_animate(slug_idle_small)
             self.changed_state = True
+        if self.state == SlugState.DYING and not self.changed_state:
+            self.anim = slug_death(slug_die_anim)
+            self.changed_state = True
+        try:
+            self.image = pg.transform.scale2x(self.anim.next())
+            if (self.lastwalkdir == SlugState.MOVING_LEFT):
+                self.image = pg.transform.flip(self.image, True, False)
+            self.image = reorient(self.orientation, self.image)
+        except:
+            self.kill()
 
-        self.image = pg.transform.scale2x(self.anim.next())
-        if (self.lastwalkdir == SlugState.MOVING_LEFT):
-            self.image = pg.transform.flip(self.image, True, False)
-        self.image = reorient(self.orientation, self.image)
 
     def check_fire(self):
         keys = pg.key.get_pressed()
@@ -105,8 +112,9 @@ class SlugSprite(pg.sprite.Sprite):
             if self.encumbered_timer > 2:
                 self.encumbered = False
                 self.encumbered_timer = 0
-        self.calculate_state()
-        self.apply_movement()
+        if self.state != SlugState.DYING:
+            self.calculate_state()
+            self.apply_movement()
         if self.shot_timer > 1:
             self.check_fire()
         self.animate()
