@@ -12,11 +12,14 @@ bullet_explode = "bullet_explosion.png"
 slime_sprite = "ground_slime.png"
 slug_die = "slug_die.png"
 snail_die = "snail_die.png"
+game_over_slug = "game_over_slug.png"
+game_over_snail = "game_over_snail.png"
 
 boss_animation = "boss_anim.png"
 background_animation = "background_animation.png"
 song = "song.wav"
 
+title_scene = "loading_screen.png"
 
 
 slug_idle = data_dir + "/" + slug_sprite_idle_1

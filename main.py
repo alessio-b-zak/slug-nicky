@@ -109,22 +109,72 @@ class Scene():
         for group in self.sprite_groups:
             group.draw(screen)
 
+class GameOverEnum(Enum):
+    SNAILS = 0
+    SLUGS = 1
+
+class GameOverScene:
+    def __init__(self, game_over_state):
+        if game_over_state == GameOverEnum.SNAILS:
+            self.back_im, _ = load_image(data_dir, game_over_snails)
+        else:
+            self.back_im, _ = load_image(data_dir, game_over_slugs)
+
+
+    def get_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            print("here")
+            start_game_event = pg.event.Event(pg.USEREVENT, {"start_game": True})
+            pg.event.post(start_game_event)
+
+
+    def update(self, screen, dt):
+        self.draw(screen)
+
+    def draw(self, screen):
+        back_im_scaled = pg.transform.scale(self.back_im, (height,width))
+        screen.blit(back_im_scaled, (0,0))
+
+
+
+class TitleScene:
+    def __init__(self):
+        self.back_im, _ = load_image(data_dir, title_scene)
+
+    def get_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            print("here")
+            start_game_event = pg.event.Event(pg.USEREVENT, {"start_game": True})
+            pg.event.post(start_game_event)
+
+
+    def update(self, screen, dt):
+        self.draw(screen)
+
+    def draw(self, screen):
+        back_im_scaled = pg.transform.scale(self.back_im, (height,width))
+        screen.blit(back_im_scaled, (0,0))
+
 class Game:
     def __init__(self, **settings):
         self.__dict__.update(settings)
         self.done = False
+        self.title = False
         self.screen = pg.display.set_mode(self.size)
         pg.mixer.music.load(data_dir + "/" + song)
         pg.mixer.music.play()
         self.clock = pg.time.Clock()
-        self.state = Scene()
+        self.state = TitleScene()
     def update(self, dt):
         self.state.update(self.screen, dt)
     def event_loop(self):
         for event in pg.event.get():
+            self.state.get_event(event)
             if event.type == pg.QUIT:
                 self.done = True
-            self.state.get_event(event)
+            elif event.type == pg.USEREVENT and not self.title:
+                self.title = True
+                self.state = Scene()
     def main_game_loop(self):
         while not self.done:
             delta_time = self.clock.tick(self.fps)/1000.0
