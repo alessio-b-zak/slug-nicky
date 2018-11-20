@@ -32,12 +32,21 @@ class SlugSprite(pg.sprite.Sprite):
         self.right_key = self.controls[1]
 
     def apply_movement(self):
-        if self.state == SlugState.MOVING_RIGHT:
-            newpos = self.rect.move(*self.movepos)
-            self.rect = newpos
-        elif self.state == SlugState.MOVING_LEFT:
-            newpos = self.rect.move(*(tuple(-1*x for x in self.movepos)))
-            self.rect = newpos
+        if not self.encumbered:
+            if self.state == SlugState.MOVING_RIGHT:
+                newpos = self.rect.move(*self.movepos)
+                self.rect = newpos
+            elif self.state == SlugState.MOVING_LEFT:
+                newpos = self.rect.move(*(tuple(-1*x for x in self.movepos)))
+                self.rect = newpos
+        else:
+            if self.state == SlugState.MOVING_RIGHT:
+                newpos = self.rect.move(*(tuple(0.5*x for x in self.movepos)))
+                self.rect = newpos
+            elif self.state == SlugState.MOVING_LEFT:
+                newpos = self.rect.move(*(tuple(-(0.5)*x for x in self.movepos)))
+                self.rect = newpos
+
         newpos =  self.rect.move(self.gravity)
         self.rect = newpos
         newpos = clip_object(self.rect)
