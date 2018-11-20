@@ -55,3 +55,6 @@ def slug_death(sprite_sheet):
 
 def snail_death(sprite_sheet):
     return SpriteStripAnim(sprite_sheet, (0,0,140,140), 4, -1, False, 20)
+
+def bomb_animate(sprite_sheet):
+    return SpriteStripAnim(sprite_sheet, (0,0,62,62), 4, -1, True, 10)

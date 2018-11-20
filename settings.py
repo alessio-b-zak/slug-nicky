@@ -30,10 +30,10 @@ class MyEvent(Enum):
     LASER_EXPLODE = 3
     FIRE_CANNON = 4
 
-orientation0_controls = (pg.K_s, pg.K_w, pg.K_1)
-orientation1_controls = (pg.K_LEFT, pg.K_RIGHT, pg.K_2)
-orientation2_controls = (pg.K_u, pg.K_j, pg.K_3)
-orientation3_controls = (pg.K_c, pg.K_x, pg.K_4)
+orientation0_controls = (pg.K_s, pg.K_w, pg.K_d)
+orientation1_controls = (pg.K_LEFT, pg.K_RIGHT, pg.K_UP)
+orientation2_controls = (pg.K_u, pg.K_j, pg.K_k)
+orientation3_controls = (pg.K_g, pg.K_f, pg.K_v)
 
 def calculate_orientation(orientation):
     if orientation == 0:

@@ -14,6 +14,8 @@ slug_die = "slug_die.png"
 snail_die = "snail_die.png"
 game_over_slug = "game_over_slug.png"
 game_over_snail = "game_over_snails.png"
+bomb_animation = "bomb_fuse.png"
+bomb_explosion = "explosion.png"
 
 boss_animation = "boss_anim.png"
 background_animation = "background_animation.png"
@@ -26,11 +28,13 @@ slug_idle = data_dir + "/" + slug_sprite_idle_1
 slug_walk = data_dir + "/" + slug_sprite_walk_1
 slug_walk_small = data_dir + "/" + slug_sprite_walk_small
 slug_idle_small = data_dir + "/" + slug_sprite_idle_small
+bomb_anim = data_dir + "/" + bomb_animation
 bullet_anim = data_dir + "/" + bullet_animation
 bullet_anim_small = data_dir + "/" + bullet_animation_small
 bullet_explode_anim = data_dir + "/" + bullet_explode
 boss_anim = data_dir + "/" + boss_animation
 background_anim = data_dir + "/" + background_animation
+explosion_anim = data_dir + "/" + bomb_explosion
 
 
 slug_die_anim = data_dir + "/" + slug_die

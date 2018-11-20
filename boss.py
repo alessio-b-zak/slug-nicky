@@ -23,7 +23,7 @@ class BossSprite(pg.sprite.Sprite):
         self.orientation = -1
         self.last_person = None
         self.last_person_loc = None
-        self.health = 1
+        self.health = 15
         self.looking_left = False
         self.invul_timer = 0
         self.epsilon = 150

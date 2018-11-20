@@ -52,12 +52,12 @@ class Scene():
                     nearest_loc, near_orientation = self.calculate_nearest()
                     if not self.boss_sprite.last_person == None:
                         if not self.boss_sprite.last_person == near_orientation or self.slug_sprite_group:
-                            self.laser_sprite_group.add((LaserSprite(nearest_loc)))
+                            self.laser_sprite_group.add((LaserSprite(nearest_loc, near_orientation)))
                             self.boss_sprite.last_person = near_orientation
                         else:
                             self.boss_sprite.start_moving()
                     else:
-                        self.laser_sprite_group.add((LaserSprite(nearest_loc)))
+                        self.laser_sprite_group.add((LaserSprite(nearest_loc, near_orientation)))
                         self.boss_sprite.last_person = near_orientation
                     print(nearest_loc)
                     self.boss_sprite.last_person_loc = nearest_loc
@@ -162,7 +162,7 @@ class Game:
         self.title = False
         self.screen = pg.display.set_mode(self.size)
         pg.mixer.music.load(data_dir + "/" + song)
-        pg.mixer.music.play()
+        pg.mixer.music.play(loops=-1)
         self.clock = pg.time.Clock()
         self.state = TitleScene()
     def update(self, dt):
