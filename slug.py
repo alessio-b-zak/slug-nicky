@@ -109,7 +109,7 @@ class SlugSprite(pg.sprite.Sprite):
         self.shot_timer += dt
         if self.encumbered:
             self.encumbered_timer += dt
-            if self.encumbered_timer > 2:
+            if self.encumbered_timer > 1:
                 self.encumbered = False
                 self.encumbered_timer = 0
         if self.state != SlugState.DYING:

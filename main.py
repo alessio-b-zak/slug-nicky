@@ -99,7 +99,6 @@ class Scene():
         collide_dict = pg.sprite.groupcollide(self.slug_sprite_group, self.laser_sprite_group, False, False)
         if self.check_explode_collisions:
             if collide_dict:
-                print("collisions")
                 for key, value in collide_dict.items():
                     key.on_hit(value[0].orientation, CollisionType.LASER)
                     value[0].on_hit(key.orientation, CollisionType.LASER)

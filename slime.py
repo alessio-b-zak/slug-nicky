@@ -33,7 +33,7 @@ class SlimeSprite(pg.sprite.Sprite):
 
     def update(self, dt):
         self.timer += dt
-        if self.timer > 6:
+        if self.timer > 3:
             self.kill()
         self.apply_movement()
         # self.image = reorient(self.orientation, self.image)

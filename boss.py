@@ -22,7 +22,7 @@ class BossSprite(pg.sprite.Sprite):
         self.aimed_position = self.gen_rand_position()
         self.orientation = -1
         self.last_person = None
-        self.health = 1
+        self.health = 20
         self.invul_timer = 0
         self.epsilon = 150
         self.rect = self.image.get_rect()
@@ -62,10 +62,8 @@ class BossSprite(pg.sprite.Sprite):
 
     def animate(self):
         try:
-            print("retrieving next thing")
             self.image = pg.transform.scale2x(self.anim.next())
         except:
-            print("here")
             self.kill()
 
     def check_health(self):
@@ -76,7 +74,6 @@ class BossSprite(pg.sprite.Sprite):
 
     def update(self, dt):
         if self.state != BossState.DYING:
-            print("here")
             self.apply_movement()
             self.invul_timer += dt
             self.check_health()
