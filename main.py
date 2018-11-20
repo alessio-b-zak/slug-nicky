@@ -51,7 +51,7 @@ class Scene():
                 if len(self.slug_sprite_group.sprites()) != 0:
                     nearest_loc, near_orientation = self.calculate_nearest()
                     if not self.boss_sprite.last_person == None:
-                        if not self.boss_sprite.last_person == near_orientation:
+                        if not self.boss_sprite.last_person == near_orientation or self.slug_sprite_group:
                             self.laser_sprite_group.add((LaserSprite(nearest_loc)))
                             self.boss_sprite.last_person = near_orientation
                         else:
