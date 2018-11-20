@@ -13,7 +13,7 @@ slime_sprite = "ground_slime.png"
 slug_die = "slug_die.png"
 snail_die = "snail_die.png"
 game_over_slug = "game_over_slug.png"
-game_over_snail = "game_over_snail.png"
+game_over_snail = "game_over_snails.png"
 
 boss_animation = "boss_anim.png"
 background_animation = "background_animation.png"

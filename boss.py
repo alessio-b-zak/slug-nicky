@@ -23,7 +23,7 @@ class BossSprite(pg.sprite.Sprite):
         self.orientation = -1
         self.last_person = None
         self.last_person_loc = None
-        self.health = 20
+        self.health = 1
         self.looking_left = False
         self.invul_timer = 0
         self.epsilon = 150
@@ -75,6 +75,8 @@ class BossSprite(pg.sprite.Sprite):
             if (self.looking_left):
                 self.image = pg.transform.flip(self.image, True, False)
         except:
+            game_over_event = pg.event.Event(pg.USEREVENT, {"winner": GameOverEnum.SLUGS})
+            pg.event.post(game_over_event)
             self.kill()
 
     def check_health(self):

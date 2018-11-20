@@ -72,6 +72,9 @@ class Scene():
     def update(self, screen, dt):
         for group in self.sprite_groups:
             group.update(dt)
+            if not self.slug_sprite_group:
+                game_over_event = pg.event.Event(pg.USEREVENT, {"winner": GameOverEnum.SNAILS})
+                pg.event.post(game_over_event)
         self.calculate_collisions()
         self.draw(screen)
 
@@ -109,16 +112,13 @@ class Scene():
         for group in self.sprite_groups:
             group.draw(screen)
 
-class GameOverEnum(Enum):
-    SNAILS = 0
-    SLUGS = 1
 
 class GameOverScene:
     def __init__(self, game_over_state):
         if game_over_state == GameOverEnum.SNAILS:
-            self.back_im, _ = load_image(data_dir, game_over_snails)
+            self.back_im, _ = load_image(data_dir, game_over_snail)
         else:
-            self.back_im, _ = load_image(data_dir, game_over_slugs)
+            self.back_im, _ = load_image(data_dir, game_over_slug)
 
 
     def get_event(self, event):
@@ -169,6 +169,9 @@ class Game:
         self.state.update(self.screen, dt)
     def event_loop(self):
         for event in pg.event.get():
+            if event.type == pg.USEREVENT:
+                if "winner" in event.dict:
+                    self.state = GameOverScene(event.dict["winner"])
             self.state.get_event(event)
             if event.type == pg.QUIT:
                 self.done = True

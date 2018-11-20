@@ -81,5 +81,7 @@ def distance(source, target):
     dist = math.sqrt((target[1]-source[1])**2 + (target[0]-source[0])**2)
     return dist
 
-
+class GameOverEnum(Enum):
+    SNAILS = 0
+    SLUGS = 1
 
