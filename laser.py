@@ -17,11 +17,11 @@ class LaserState(Enum):
 
 class LaserSprite(pygame.sprite.Sprite):
 
-    def __init__(self, init_location):
+    def __init__(self, init_location, orientation):
         pygame.sprite.Sprite.__init__(self)
         self.image = ATOM_IMG
         self.state = LaserState.EXPLODING
-        self.orientation = -1
+        self.orientation = orientation
         self.rect = self.image.get_rect(center=init_location)
         self.current_time = 0
 
